@@ -6,6 +6,6 @@ extern "C" bool ulid_init(UDF_INIT *, UDF_ARGS *, char *) {
 
 extern "C" void ulid_deinit(UDF_INIT *){}
 
-extern "C" long long ulid(UDF_INIT *initid, UDF_ARGS *, char *, char *) {
-  return 1;
+extern "C" char *ulid(UDF_INIT *, UDF_ARGS *, char *result, unsigned long *length, char *is_null, char *error) {
+  return nullptr;
 }
