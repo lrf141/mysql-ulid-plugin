@@ -7,9 +7,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 project("mysql-ulid" VERSION 0.0.1 DESCRIPTION "MySQL UDF Plugin for generating ULIDs")
 
-FILE(GLOB mysql_ulid_src "*.h" "*.cpp")
-
-# Get mysql cxx flags and include directory
+# ----- mysql config
 execute_process(
     COMMAND mysql_config --version
     OUTPUT_VARIABLE MYSQL_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -30,10 +28,30 @@ execute_process(
     OUTPUT_VARIABLE MYSQL_INCLUDE OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 message("-- MySQL INCLUDE Directory: ${MYSQL_INCLUDE}")
+# --- mysql_config
 
+# --- ulid build
+FILE(GLOB mysql_ulid_src "src/*.h" "src/*.cpp")
 add_library(
     ulid SHARED
     ${mysql_ulid_src}
 )
 include_directories(ulid ${MYSQL_INCLUDE})
 target_compile_options(ulid PUBLIC ${MYSQL_CXX_FLAGS})
+# --- ulid build
+
+# --- gtest
+include(FetchContent)
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/be03d00f5f0cc3a997d1a368bee8a1fe93651f48.zip
+)
+FetchContent_MakeAvailable(googletest)
+FILE(GLOB mysql_ulid_test "test/*.cpp")
+
+add_executable(ulid-gtest ${mysql_ulid_src} ${mysql_ulid_test})
+target_link_libraries(ulid-gtest gtest_main)
+target_include_directories(ulid-gtest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+add_test(NAME test COMMAND ulid-gtest)
+enable_testing()
+# --- gtest
