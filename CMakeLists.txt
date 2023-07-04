@@ -31,13 +31,12 @@ message("-- MySQL INCLUDE Directory: ${MYSQL_INCLUDE}")
 # --- mysql_config
 
 # --- ulid build
-FILE(GLOB mysql_ulid_src "src/*.cpp")
-FILE(GLOB mysql_ulid_include "include/*.h")
+FILE(GLOB mysql_ulid_src "src/*.cpp" "src/*.h")
 add_library(
     ulid SHARED
     ${mysql_ulid_src}
 )
-include_directories(ulid ${MYSQL_INCLUDE} ${mysql_ulid_include})
+include_directories(ulid ${MYSQL_INCLUDE})
 target_compile_options(ulid PUBLIC ${MYSQL_CXX_FLAGS})
 # --- ulid build
 
@@ -52,7 +51,7 @@ FILE(GLOB mysql_ulid_test "test/*.cpp")
 
 add_executable(ulid-gtest ${mysql_ulid_src} ${mysql_ulid_test})
 target_link_libraries(ulid-gtest gtest_main)
-target_include_directories(ulid-gtest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(ulid-gtest PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_test(NAME test COMMAND ulid-gtest)
 enable_testing()
 # --- gtest
