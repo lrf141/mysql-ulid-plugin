@@ -1,4 +1,3 @@
-#include <limits>
 #include <mysql.h>
 #include <cstring>
 
