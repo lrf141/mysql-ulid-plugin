@@ -1,4 +1,4 @@
-#include "dummy.h"
+#include "../include/dummy.h"
 
 int one() {
 	return 1;
