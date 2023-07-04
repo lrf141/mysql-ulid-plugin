@@ -13,10 +13,10 @@ FILE(GLOB mysql_ulid_src "*.h" "*.cpp")
 execute_process(
     COMMAND mysql_config --version
     OUTPUT_VARIABLE MYSQL_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE
-    RESULT_VARIABLE MYSQL_VERSION_EXIT_CODE
+    RESULT_VARIABLE MYSQL_CONFIG_EXIT_STATUS
 )
 message("-- MySQL Library Version: ${MYSQL_VERSION}")
-if (MYSQL_VERSION_EXIT_CODE)
+if (MYSQL_CONFIG_EXIT_STATUS)
     message(FATAL_ERROR "mysql_config command is not found. please install it and check version.")
 endif()
 
