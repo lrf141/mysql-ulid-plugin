@@ -12,6 +12,7 @@
 #define RANDOM_NUMBER_PART_SIZE 10
 
 static std::uniform_int_distribution<uint8_t> Rand255(0, 255);
+static const char EncodeCharacters[33] = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 
 struct ULID {
     // ULID structured by 16 octet data
@@ -33,16 +34,13 @@ struct ULID {
     }
 
     inline void GenerateRandomNumberPart(std::mt19937& mt, ULID& ulid) {
-        ulid.data[6] = Rand255(mt);
-        ulid.data[7] = Rand255(mt);
-        ulid.data[8] = Rand255(mt);
-        ulid.data[9] = Rand255(mt);
-        ulid.data[10] = Rand255(mt);
-        ulid.data[11] = Rand255(mt);
-        ulid.data[12] = Rand255(mt);
-        ulid.data[13] = Rand255(mt);
-        ulid.data[14] = Rand255(mt);
-        ulid.data[15] = Rand255(mt);
+        for (int i = TIMESTAMP_PART_SIZE; i < RANDOM_NUMBER_PART_SIZE; i++) {
+            addNumberAsUint8t(Rand255(mt), i, ulid);
+        }
+    }
+
+    inline void addNumberAsUint8t(uint8_t n, int index, ULID& ulid) {
+        ulid.data[index] = n;
     }
 };
 

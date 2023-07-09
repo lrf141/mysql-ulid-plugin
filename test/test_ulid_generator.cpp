@@ -30,3 +30,19 @@ TEST(test_generate_random_number_part, set_as_binary) {
         ASSERT_LE(ulid.data[i], static_cast<uint8_t>(255));
     }
 }
+
+TEST(test_add_number_as_uint8t, set_as_uint8t) {
+    ULID ulid;
+    time_t timestamp = 281474976710655L;
+    ulid.GenerateTimestampPart(timestamp, ulid);
+    for(int i = TIMESTAMP_PART_SIZE; i < RANDOM_NUMBER_PART_SIZE; i++) {
+        ulid.addNumberAsUint8t(static_cast<uint8_t>(255), i, ulid);
+    }
+    int i;
+    for (i = 0; i < TIMESTAMP_PART_SIZE; i++) {
+        ASSERT_EQ(ulid.data[i], static_cast<uint8_t>(255));
+    }
+    for (; i < RANDOM_NUMBER_PART_SIZE; i++) {
+        ASSERT_EQ(ulid.data[i], static_cast<uint8_t>(255));
+    }
+}
