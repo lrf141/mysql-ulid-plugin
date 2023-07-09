@@ -33,7 +33,7 @@ struct ULID {
         ulid.data[5] = static_cast<uint8_t>(timestamp);
     }
 
-    inline void GenerateRandomNumberPart(std::mt19937& mt, ULID& ulid) {
+    inline void GenerateRandomnessPart(std::mt19937& mt, ULID& ulid) {
         for (int i = TIMESTAMP_PART_SIZE; i < RANDOM_NUMBER_PART_SIZE; i++) {
             addNumberAsUint8t(Rand255(mt), i, ulid);
         }
