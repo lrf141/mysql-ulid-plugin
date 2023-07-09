@@ -19,7 +19,6 @@ extern "C" char *ulid(UDF_INIT *, UDF_ARGS *, char *result, unsigned long *lengt
     std::string ulidString = ulidGenerator.Create(now);
     strcpy(result, ulidString.c_str());
     *length = strlen(result);
-    // TODO: return human readable string.
-    // NOW-ex: 0x303030314A414E474A4E4D434D46303752303030303030303030
+    // if mysql client run with --binary-as-hex=1, return string is represent as hex
     return result;
 }

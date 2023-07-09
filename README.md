@@ -32,3 +32,11 @@ $ mysql build && cd $_
 $ cmake ../
 $ ./ulid-gtest
 ```
+
+# Use ULID()
+```sql
+CREATE FUNCTION ulid RETURNS STRING SONAME 'ulid.so';
+SELECT ULID();
+```
+  
+Warning: If mysql client run with --binary-as-hex=1, Return string is represent as hex.
