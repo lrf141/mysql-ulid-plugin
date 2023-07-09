@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include <chrono>
+#include <algorithm>
 
 #include "ulid_generator.h"
 
@@ -74,4 +75,23 @@ TEST(test_encode, correspond_timestamp_and_lex_order) {
 
     int diffCount = ulidString1.compare(ulidString2);
     ASSERT_LT(diffCount, 0);
+}
+
+TEST(test_encode, encode_characters) {
+    ULID ulid;
+    time_t time = 1688894191930L;
+    ulid.GenerateTimestampPart(time);
+    for(int i = TIMESTAMP_PART_SIZE; i < RANDOM_NUMBER_PART_SIZE; i++) {
+        ulid.addDataByIndexAsUint8t(static_cast<uint8_t>(255), i);
+    }
+    std::string ulidString = ulid.Encode();
+
+    for (int i = 0; i < ULID_STRING_LENGTH; i++) {
+        char c = ulidString[i];
+        int res = std::count(std::begin(EncodeCharacters),
+                             std::end(EncodeCharacters),
+                             c
+                             );
+        ASSERT_EQ(res, 1);
+    }
 }
