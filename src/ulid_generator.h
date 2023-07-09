@@ -51,8 +51,12 @@ struct ULID {
     inline std::string Encode() {
         char encodedData[ULID_STRING_LENGTH];
         encodedData[ULID_STRING_LENGTH - 1] = '\0';
+        EncodeTimestampPart(encodedData);
+        EncodeRandomnessPart(encodedData);
+        return std::string(encodedData);
+    }
 
-        // Timestamp Part Encode
+    inline void EncodeTimestampPart(char encodedData[ULID_STRING_LENGTH]) {
         encodedData[0] = EncodeCharacters[(data[0] & 224) >> 5];
         encodedData[1] = EncodeCharacters[(data[0] & 31)];
         encodedData[2] = EncodeCharacters[(data[1] & 248) >> 3];
@@ -63,8 +67,9 @@ struct ULID {
         encodedData[7] = EncodeCharacters[(data[4] & 124) >> 2];
         encodedData[8] = EncodeCharacters[((data[4] & 3) << 3) | (data[5] & 224) >> 5];
         encodedData[9] = EncodeCharacters[data[5] & 31];
+    }
 
-        // Randomness Part Encode
+    inline void EncodeRandomnessPart(char encodedData[ULID_STRING_LENGTH]) {
         encodedData[10] = EncodeCharacters[(data[6] & 248) >> 3];
         encodedData[11] = EncodeCharacters[((data[6] & 7) << 2) | ((data[7] & 192) >> 6)];
         encodedData[12] = EncodeCharacters[(data[7] & 62) >> 1];
@@ -81,8 +86,6 @@ struct ULID {
         encodedData[23] = EncodeCharacters[(data[14] & 124) >> 2];
         encodedData[24] = EncodeCharacters[((data[14] & 3) << 3) | ((data[15] & 224) >> 5)];
         encodedData[25] = EncodeCharacters[data[15] & 31];
-
-        return std::string(encodedData);
     }
 
     inline std::string Create(time_t timestamp) {
