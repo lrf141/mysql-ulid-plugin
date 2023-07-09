@@ -10,6 +10,7 @@ extern "C" bool ulid_init(UDF_INIT *, UDF_ARGS *, char *) {
 
 extern "C" void ulid_deinit(UDF_INIT *){}
 
+// if mysql client run with --binary-as-hex=1, return string is represent as hex
 extern "C" char *ulid(UDF_INIT *, UDF_ARGS *, char *result, unsigned long *length, char *is_null, char *) {
     time_t now;
     ULID ulidGenerator;
@@ -19,6 +20,5 @@ extern "C" char *ulid(UDF_INIT *, UDF_ARGS *, char *result, unsigned long *lengt
     std::string ulidString = ulidGenerator.Create(now);
     strcpy(result, ulidString.c_str());
     *length = strlen(result);
-    // if mysql client run with --binary-as-hex=1, return string is represent as hex
     return result;
 }
