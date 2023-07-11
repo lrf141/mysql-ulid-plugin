@@ -33,7 +33,7 @@ struct ULID {
     }
 
     inline void GenerateRandomnessPart(std::mt19937& mt) {
-        for (int i = TIMESTAMP_PART_SIZE; i < RANDOM_NUMBER_PART_SIZE; i++) {
+        for (int i = TIMESTAMP_PART_SIZE, j = 0; j < RANDOM_NUMBER_PART_SIZE; i++, j++) {
             addDataByIndexAsUint8t(Rand255(mt), i);
         }
     }
@@ -90,9 +90,9 @@ struct ULID {
 
     inline std::string Create(time_t timestamp) {
         std::random_device randomDevice;
-        std::mt19937 mt(randomDevice());
+        std::mt19937 mt19937(randomDevice());
         GenerateTimestampPart(timestamp);
-        GenerateRandomnessPart(mt);
+        GenerateRandomnessPart(mt19937);
         return Encode();
     }
 };

@@ -2,6 +2,7 @@
 #include <mysql.h>
 #include <mysql/udf_registration_types.h>
 #include <cstring>
+#include <mutex>
 #include "ulid_generator.h"
 
 extern "C" bool ulid_init(UDF_INIT *, UDF_ARGS *, char *) {
@@ -16,9 +17,10 @@ extern "C" char *ulid(UDF_INIT *, UDF_ARGS *, char *result, unsigned long *lengt
     ULID ulidGenerator;
 
     time(&now);
-    // TODO: check randomness pattern
+
     std::string ulidString = ulidGenerator.Create(now);
     strcpy(result, ulidString.c_str());
     *length = strlen(result);
+
     return result;
 }
