@@ -22,13 +22,13 @@ $ make
 
 ## Run test
 ```bash
-$ mysql build && cd $_
+$ mkdir build && cd $_
 $ cmake ../
 $ make test
 ```
 or
 ```bash
-$ mysql build && cd $_
+$ mkdir build && cd $_
 $ cmake ../
 $ ./ulid-gtest
 ```
